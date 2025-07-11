@@ -28,5 +28,5 @@ def call_groq(base64_image):
         # model="meta-llama/llama-4-scout-17b-16e-instruct",
         model="meta-llama/llama-4-maverick-17b-128e-instruct",
     )
-    
+    print(f'\033[1;32m{chat_completion}\033[0m')
     return chat_completion.choices[0].message.content
