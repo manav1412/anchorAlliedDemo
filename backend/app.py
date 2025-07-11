@@ -11,6 +11,8 @@ from PIL import Image
 from io import BytesIO
 from fastapi.responses import JSONResponse
 from bson import ObjectId
+import docx
+import fitz
 
 from service.ollama import get_model_response
 from service.llama4_scout import call_groq
@@ -73,14 +75,40 @@ async def upload_file(
 
 @app.post('/upload-cloud')
 async def upload_file_cloud(
-    image: UploadFile = File(...)
+    file: UploadFile = File(...)
 ):
     try:
-        image_bytes = await image.read()
-        image_pil = Image.open(BytesIO(image_bytes))
+        file_bytes = await file.read()
+        image_extensions = ['.jpg', '.jpeg', '.png', '.bmp', '.gif']
+        is_image = any(file.filename.lower().endswith(ext) for ext in image_extensions)
+        if is_image:
+            # Uploaded file is an image so there is no need to convert
+            file_pil = Image.open(BytesIO(file_bytes))
+        else:
+            if file.filename.endswith('.docx'):
+                # if the file is a MS Word Document, convert it to image 
+                doc = docx.Document(BytesIO(file_bytes))
+                # Extract first image from docx
+                for rel in doc.part.rels.values():
+                    if "image" in rel.target_ref:
+                        img_data = rel.target_part.blob
+                        file_pil = Image.open(BytesIO(img_data))
+                        break
+                else:
+                    raise ValueError("No image found in docx")
+            elif file.filename.endswith('.pdf'):
+                # if the file is a PDF Document, convert it to image 
+                pdf_doc = fitz.open(stream=file_bytes, filetype="pdf")
+                page = pdf_doc[0]
+                pix = page.get_pixmap()
+                img_data = pix.tobytes("png")
+                file_pil = Image.open(BytesIO(img_data))
+                pdf_doc.close()
+            else:
+                raise NotImplementedError 
 
         buffered = BytesIO()
-        image_pil.save(buffered, format="PNG")
+        file_pil.save(buffered, format="PNG")
         img_str = base64.b64encode(buffered.getvalue()).decode()
         
         result = call_groq(img_str)

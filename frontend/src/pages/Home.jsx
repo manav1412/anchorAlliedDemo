@@ -5,7 +5,7 @@ import '../App.css';
 import Navbar from '../components/Navbar';
 
 function Home() {
-  const [imageData, setImageData] = useState(null);
+  const [fileData, setFileData] = useState(null);
   const [responseData, setResponseData] = useState(null);
   const [islocalClicked, setLocalCLicked] = useState(false);
   const [isCloudClicked, setCloudClicked] = useState(false);
@@ -34,7 +34,7 @@ function Home() {
 
   const handleUpload = async (e) => {
     const file = e.target.files[0];
-    setImageData(file);
+    setFileData(file);
     setPreviewUrl(URL.createObjectURL(file));
     toast.success('File selected', toastOptions);
   };
@@ -42,14 +42,14 @@ function Home() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!imageData) {
+    if (!fileData) {
       toast.error('Please upload a file first', toastOptions);
       return;
     }
 
     const formData = new FormData();
-    formData.append('image', imageData);
-    setImageData(null);
+    formData.append('file', fileData);
+    setFileData(null);
 
     const toastId = toast.loading('Uploading and parsing...', {
       duration: Infinity,
@@ -63,18 +63,6 @@ function Home() {
         setResponseData(response.data.response);
       }else{
         const response = await axios.post('http://localhost:8000/upload-cloud', formData);
-        // if (response.data.response.notifications.products_list){
-        //   const notifications = await response.data.response.notifications.products_list;
-        //   console.log(notifications)
-        //   toast.success(JSON.stringify(notifications), {
-        //     duration: 10000, style: {
-        //       minWidth: '600px', // or maxWidth
-        //       minHeight: '100px',
-        //       maxHeight:'200px',
-        //       whiteSpace: 'pre-wrap', // optional: handles long JSON strings nicely
-        //     },
-        //   });
-        // }
         toast.success("Invoice parsed successfully!", { ...toastOptions, id: toastId});
         setResponseData(response.data.response);
       }
@@ -85,125 +73,6 @@ function Home() {
   };
 
   return (
-    // <div className="min-h-screen text-white">
-    //   <Navbar />
-
-    //   <div className="max-w-4xl mx-auto px-4 py-10">
-    //     <h1 className="text-4xl font-bold mb-4 text-center text-black">Invoice Parser</h1>
-    //     <p className="text-center text-lg mb-8 text-black">
-    //       Upload invoices or bills in <strong>PDF, DOCX, PNG, JPG</strong> formats.
-    //       Our system extracts both handwritten and printed content and returns a structured JSON.
-    //     </p>
-
-    //     <div className='flex gap-3 m-2'>
-    //       <button className={`border rounded-lg p-2 text-black ${islocalClicked ? "bg-blue-500" : "bg-blue-300"}`} onClick={handleLocal}>Locally</button>
-    //       <button className={`border rounded-lg p-2 text-black bg-blue-300 ${isCloudClicked ? "bg-blue-500" : "bg-blue-300"}`} onClick={handleCloud}>cloud</button>
-    //     </div>
-
-    //     <div className="bg-blue-300 rounded-2xl p-8 shadow-lg text-gray-800">
-    //       <h2 className="text-2xl font-semibold mb-4 text-center">Upload your file</h2>
-
-    //       <ul className="list-disc list-inside mb-6 text-sm text-gray-600">
-    //         <li>Supported formats: <strong>.pdf, .docx, .jpg, .jpeg, .png</strong></li>
-    //         <li>File is parsed locally using an <strong>LLM</strong> model</li>
-    //         <li>Data is extracted and stored in a database</li>
-    //         <li>You’ll see the parsed invoice in a structured format below</li>
-    //       </ul>
-
-    //       <form onSubmit={handleSubmit} className="space-y-4">
-    //         <input
-    //           type="file"
-    //           onChange={handleUpload}
-    //           className="block w-full text-sm text-gray-600
-    //             file:mr-4 file:py-2 file:px-4
-    //             file:rounded-full file:border-0
-    //             file:text-sm file:font-semibold
-    //             file:bg-blue-100 file:text-blue-700
-    //             hover:file:bg-blue-200"
-    //         />
-
-    //         <div className='flex gap-2'>
-    //           <button
-    //             type="submit"
-    //             className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
-    //           >
-    //             Parse Invoice
-    //           </button>
-    //         </div>
-    //       </form>
-    //     </div>
-
-    //     {responseData && typeof responseData === 'object' && (
-    //       <div className="mt-10 bg-white text-gray-800 p-6 rounded-2xl shadow-lg">
-    //         <h3 className="text-xl font-semibold mb-4 border-b pb-2">Parsed Invoice Data</h3>
-
-    //         <div className='mb-4'>
-    //           <p className='font-medium'>📅 Date:</p>
-    //           <p>{responseData.date || 'N/A'}</p>
-    //         </div>
-
-    //         <div className="mb-4">
-    //           <p className="font-medium">📄 Bill ID:</p>
-    //           <p>{responseData.bill_id || 'N/A'}</p>
-    //         </div>
-
-    //         <div className="mb-4">
-    //           <p className="font-medium">🏢 Distributor Name:</p>
-    //           <p>{responseData.distributor_name || 'N/A'}</p>
-    //         </div>
-
-    //         <div className="mb-4">
-    //           <p className="font-medium">📦 Products:</p>
-              
-    //           {/* <ul className="list-disc list-inside">
-    //             {responseData.products?.map((product, index) => (
-    //               <li key={index}>{product}</li>
-    //             ))}
-    //           </ul> */}
-
-    //           {/* <ul className="list-disc list-inside">
-    //             {responseData.products?.map((product, index) => (
-    //               <li key={index}>
-    //                 {product.product_name} - Qty: {product.quantity}, Unit: {product.unit_price}, Total: {product.total_price}
-    //               </li>
-    //             ))}
-    //           </ul> */}
-    //         </div>
-
-    //         <div className="mb-6">
-    //           <p className="font-medium mb-2">🧾 Each Product Detail:</p>
-    //           <div className="overflow-x-auto">
-    //             <table className="w-full text-left border border-gray-300 rounded-md text-sm">
-    //               <thead className="bg-gray-100 text-gray-700">
-    //                 <tr>
-    //                   <th className="px-3 py-2 border">Product</th>
-    //                   <th className="px-3 py-2 border">Quantity</th>
-    //                   <th className="px-3 py-2 border">Unit Price</th>
-    //                   <th className="px-3 py-2 border">Total Price</th>
-    //                 </tr>
-    //               </thead>
-    //               <tbody>
-    //                 {responseData.each_product_prize?.map((item, idx) => (
-    //                   <tr key={idx} className="border-t">
-    //                     <td className="px-3 py-2 border">{item.product_name}</td>
-    //                     <td className="px-3 py-2 border">{item.quantity}</td>
-    //                     <td className="px-3 py-2 border">{item.unit_price}</td>
-    //                     <td className="px-3 py-2 border">{item.total_price}</td>
-    //                   </tr>
-    //                 ))}
-    //               </tbody>
-    //             </table>
-    //           </div>
-    //         </div>
-
-    //         <div>
-    //           <p className="font-medium">💰 Total Cost:</p>
-    //           <p>{responseData.total_cost ? `₹${responseData.total_cost}` : 'N/A'}</p>
-    //         </div>
-    //       </div>
-    //     )}
-    //   </div>
-    // </div>
     <div className="min-h-screen bg-gradient-to-b from-blue-100 to-white text-gray-800">
       <Navbar />
 
@@ -256,7 +125,7 @@ function Home() {
 
             {previewUrl && (
               <div className="mt-4 text-center">
-                <p className="text-sm text-gray-600 mb-2">📷 Image Preview</p>
+                <p className="text-sm text-gray-600 mb-2">📷 File Preview</p>
                 <img
                   src={previewUrl}
                   alt="Uploaded Preview"
