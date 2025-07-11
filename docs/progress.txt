@@ -1,0 +1,53 @@
+APPROACHES
+	1) TR-OCR Fine-tuning
+		STATUS: ON HOLD
+		REASON:
+			ChatGPT Plus subscription requirement
+			Priority for Demo
+		REQUIREMENTS: 
+			ChatGPT Plus for Handwritten image dataset generation
+			Google Colab GPU for fine-tuning (free tier)
+		DATASET DETAILS: 
+			Generated: 169
+			Required: 250/500 (version 1/version 2)
+			Deficit: 81/331
+			
+	2) .NET-based OCR
+		STATUS: ON HOLD
+		REASON:
+			.NET expertise issue
+			Priority for Demo
+		REQUIREMENTS:
+			.NET expertise
+			License
+			
+	3) Ollama vs. HuggingFace
+		STATUS: COMPLETED
+		VERDICT: Ollama is better
+		REASON:
+			Ollama is much faster
+			It is much more accurate as well
+			
+	4) Manual Parsing
+		STATUS: ON HOLD
+		REASON:
+			Priority for Demo
+		METHODOLOGY:
+			Prompt the LLM to generate JSON directly from the Image
+			Parse the JSON manually
+			
+	5) Denoising
+		STATUS: COMPLETED
+		VERDICT: Method 3 (Sharp) and Method 5 (Unsharp) are good
+		ACCURACY IMPROVEMENT: 10%, to 95%
+		
+	6) Accuracy Measurement
+		STATUS: ON HOLD
+		REASON:
+			Priority for Demo
+		METHODOLOGY:
+			A) Ollama Makefile: Mention all company products in makefile, fine-tune the model, and run accuracy check on the generated JSON
+			B) Hard-coded verification 
+		
+		
+		

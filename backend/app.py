@@ -1,0 +1,150 @@
+import os
+import re
+import json
+import time
+import base64
+from fastapi import FastAPI, File, UploadFile, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from dotenv import load_dotenv
+from pymongo import MongoClient
+from PIL import Image
+from io import BytesIO
+from fastapi.responses import JSONResponse
+from bson import ObjectId
+
+from service.ollama import get_model_response
+from service.llama4_scout import call_groq
+from service.denoising import method3_pil_enhancement_from_base64
+from service.notify import call_groq_notifier
+from service.sent_to_gsheet import send_to_google_sheets
+
+load_dotenv()
+
+MONGO_URI = os.getenv("MONGO_URI")
+client = MongoClient(MONGO_URI)
+
+db = client['allied']
+collection = db['bills']
+
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_headers = ["*"],
+    allow_origins = ["http://localhost:5173"],
+    allow_methods = ["*"],
+    allow_credentials = True
+)
+
+@app.post('/upload')
+async def upload_file(
+    image: UploadFile = File(...)
+):
+    try:
+        image_bytes = await image.read()
+        image_pil = Image.open(BytesIO(image_bytes))
+
+        # Convert image to base64
+        buffered = BytesIO()
+        image_pil.save(buffered, format="PNG")
+        img_str = base64.b64encode(buffered.getvalue()).decode()
+        
+        # Denoised base64
+        enhanced_base64 = method3_pil_enhancement_from_base64(img_str)
+
+        result = await get_model_response(enhanced_base64)
+        
+        print("Raw Result from ollama model:---------->",result)
+        cleaned = re.sub(r"^```json\s*|\s*```$", "", result.strip())
+
+        try:
+            json_data = json.loads(cleaned)
+            collection.insert_one(json_data)
+            json_data["_id"] = str(json_data.get("_id", ""))
+            print("Result:--------->", json_data)
+            return {"response":json_data}
+        except json.JSONDecodeError as e:
+            print("Invalid JSON from ollama response:", e)
+            return None
+    
+    except Exception as e:
+        print(f"Error at backend route: {str(e)}")
+
+
+@app.post('/upload-cloud')
+async def upload_file_cloud(
+    image: UploadFile = File(...)
+):
+    try:
+        image_bytes = await image.read()
+        image_pil = Image.open(BytesIO(image_bytes))
+
+        buffered = BytesIO()
+        image_pil.save(buffered, format="PNG")
+        img_str = base64.b64encode(buffered.getvalue()).decode()
+        
+        result = call_groq(img_str)
+        print("Raw response from llama4:--------->", result)
+        cleaned = re.sub(r"^```json\s*|\s*```$", "", result.strip())
+        print("Cleaned Result from llama4:---------->", cleaned)
+        
+        notifications = call_groq_notifier(cleaned)
+        clean_notifications = re.sub(r"^```json\s*|\s*```$", "", notifications.strip())
+        print("Cleaned Notifications:", clean_notifications)
+        
+        try:
+            json_data = json.loads(cleaned)
+        except Exception as e:
+            print("Failed to load JSON data", str(e))
+        
+        try:
+            parsed_notifications = json.loads(clean_notifications)
+        except Exception as e:
+            print("Failed to load notifications JSON data", str(e))
+
+        json_data['notifications'] = parsed_notifications
+        
+        insert_result = collection.insert_one(json_data)
+        json_data["_id"] = str(insert_result.inserted_id)
+
+        send_to_google_sheets(json_data)
+
+        return {"response": json_data}
+
+    except json.JSONDecodeError as e:
+        print("Invalid JSON from cloud llm model:", e)
+        return {"error": "Invalid JSON"}
+        
+    except Exception as e:
+        return {"error": f"got error in upload-cloud api {str(e)}"}
+
+
+class MongoEncoder:
+    @staticmethod
+    def transform(doc):
+        doc["_id"] = str(doc["_id"])
+        return doc
+
+
+@app.get("/invoices")
+def get_invoices():
+    try:
+        cursor = collection.find()
+        invoices = [MongoEncoder.transform(doc) for doc in cursor]
+        return {"invoices": invoices}
+    except Exception as e:
+        return JSONResponse(status_code=500, content={"error": str(e)})
+    
+    
+@app.delete("/invoice/{invoice_id}")
+def delete_invoice(
+    invoice_id: str
+):
+    try:
+        result = collection.delete_one({"_id":ObjectId(invoice_id)})
+        if result.deleted_count == 0:
+            return {"message":"Invoice not found"}
+        return {"message": "Invoice deleted successfully"}
+    except Exception as e:
+        return {"error":f"Failed to delete invoice {str(e)}"}
+        

@@ -1,0 +1,10 @@
+requests
+python-dotenv
+pymongo
+fastapi
+uvicorn
+pydantic
+pillow
+python-multipart
+httpx
+groq

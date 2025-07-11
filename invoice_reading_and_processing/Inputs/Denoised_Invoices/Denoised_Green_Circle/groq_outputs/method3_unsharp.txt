@@ -1,0 +1,53 @@
+```json
+{
+  "bill_id": "02620",
+  "distributor_name": "GREEN CIRCLE TRADING CO LLC",
+  "products": [
+    "2\" pvc wrapping tape",
+    "spray paint brown 26",
+    "spray paint black 02",
+    "spray paint chrome silver 22",
+    "spray paint aqua blue 18",
+    "spray paint matt black 20"
+  ],
+  "each_product_prize": [
+    {
+      "product_name": "2\" pvc wrapping tape",
+      "quantity": 3,
+      "unit_price": 0.94,
+      "total_price": 2.82
+    },
+    {
+      "product_name": "spray paint brown 26",
+      "quantity": 5,
+      "unit_price": 0.33,
+      "total_price": 1.65
+    },
+    {
+      "product_name": "spray paint black 02",
+      "quantity": 5,
+      "unit_price": 0.33,
+      "total_price": 1.65
+    },
+    {
+      "product_name": "spray paint chrome silver 22",
+      "quantity": 5,
+      "unit_price": 2.50,
+      "total_price": 12.50
+    },
+    {
+      "product_name": "spray paint aqua blue 18",
+      "quantity": 3,
+      "unit_price": 0.33,
+      "total_price": 0.99
+    },
+    {
+      "product_name": "spray paint matt black 20",
+      "quantity": 3,
+      "unit_price": 0.33,
+      "total_price": 0.99
+    }
+  ],
+  "total_cost": 19.60
+}
+```

@@ -1,0 +1,53 @@
+```json
+{
+  "bill_id": "02620",
+  "distributor_name": "GREEN CIRCLE TRADING CO LLC",
+  "products": [
+    "2\" pvc wrapping Tape",
+    "Spray Paint: Brown 26",
+    "Black 02",
+    "Chrome Silver",
+    "Lacquer Cbs",
+    "Matt Black 20"
+  ],
+  "each_product_prize": [
+    {
+      "product_name": "2\" pvc wrapping Tape",
+      "quantity": 3,
+      "unit_price": 0.94,
+      "total_price": 2.82
+    },
+    {
+      "product_name": "Spray Paint: Brown 26",
+      "quantity": 5,
+      "unit_price": 0.33,
+      "total_price": 1.65
+    },
+    {
+      "product_name": "Black 02",
+      "quantity": 5,
+      "unit_price": 0.33,
+      "total_price": 1.65
+    },
+    {
+      "product_name": "Chrome Silver",
+      "quantity": 5,
+      "unit_price": 0.50,
+      "total_price": 2.50
+    },
+    {
+      "product_name": "Lacquer Cbs",
+      "quantity": 3,
+      "unit_price": 0.33,
+      "total_price": 0.99
+    },
+    {
+      "product_name": "Matt Black 20",
+      "quantity": 3,
+      "unit_price": 0.33,
+      "total_price": 0.99
+    }
+  ],
+  "total_cost": 9.60
+}
+```

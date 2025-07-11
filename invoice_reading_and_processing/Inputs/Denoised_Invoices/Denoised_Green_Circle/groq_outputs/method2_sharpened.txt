@@ -1,0 +1,60 @@
+```json
+{
+  "bill_id": "02620",
+  "distributor_name": "GREEN CIRCLE TRADING CO LLC",
+  "products": [
+    "2\" Pvc Wrapping Tape",
+    "Vinyl Black",
+    "Spray Paint: Brown 26 5 lit.",
+    "Spray Paint: Black 02 5 lit.",
+    "Spray Paint: Chrome Silver 22",
+    "Spray Paint: (agmur) Clear 18 3 lit.",
+    "Spray Paint: Matt Black 20 3 lit."
+  ],
+  "each_product_prize": [
+    {
+      "product_name": "2\" Pvc Wrapping Tape",
+      "quantity": 3,
+      "unit_price": 0.94,
+      "total_price": 2.82
+    },
+    {
+      "product_name": "Vinyl Black",
+      "quantity": null,
+      "unit_price": null,
+      "total_price": null
+    },
+    {
+      "product_name": "Spray Paint: Brown 26 5 lit.",
+      "quantity": null,
+      "unit_price": 5.33,
+      "total_price": null
+    },
+    {
+      "product_name": "Spray Paint: Black 02 5 lit.",
+      "quantity": null,
+      "unit_price": 5.33,
+      "total_price": null
+    },
+    {
+      "product_name": "Spray Paint: Chrome Silver 22",
+      "quantity": null,
+      "unit_price": 5.50,
+      "total_price": null
+    },
+    {
+      "product_name": "Spray Paint: (agmur) Clear 18 3 lit.",
+      "quantity": null,
+      "unit_price": 5.33,
+      "total_price": null
+    },
+    {
+      "product_name": "Spray Paint: Matt Black 20 3 lit.",
+      "quantity": null,
+      "unit_price": 5.33,
+      "total_price": null
+    }
+  ],
+  "total_cost": ""
+}
+```
