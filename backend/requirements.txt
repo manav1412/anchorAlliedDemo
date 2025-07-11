@@ -8,3 +8,5 @@ pillow
 python-multipart
 httpx
 groq
+python-docx
+PyMuPDF
