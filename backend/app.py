@@ -17,8 +17,8 @@ import fitz
 from service.ollama import get_model_response
 from service.llama4_scout import call_groq
 from service.denoising import method3_pil_enhancement_from_base64
-from service.notify import call_groq_notifier
 from service.sent_to_gsheet import send_to_google_sheets
+from utils.similarity_check import fetch_similar_item
 
 load_dotenv()
 
@@ -116,21 +116,21 @@ async def upload_file_cloud(
         cleaned = re.sub(r"^```json\s*|\s*```$", "", result.strip())
         print("Cleaned Result from llama4:---------->", cleaned)
         
-        notifications = call_groq_notifier(cleaned)
-        clean_notifications = re.sub(r"^```json\s*|\s*```$", "", notifications.strip())
-        print("Cleaned Notifications:", clean_notifications)
-        
         try:
             json_data = json.loads(cleaned)
         except Exception as e:
             print("Failed to load JSON data", str(e))
+                
+        for i in range(len(json_data["each_product_prize"])):
+            original_product_name = json_data["each_product_prize"][i]["product_name"]
+            product_quantity = json_data["each_product_prize"][i]["quantity"]
+            original_item_description = f"{original_product_name},{product_quantity}"
+            
+            similar_item, item_code = fetch_similar_item(original_item_description)
+            json_data["each_product_prize"][i]["product_name"] = similar_item
+            json_data["each_product_prize"][i]["item_code"] = item_code
         
-        try:
-            parsed_notifications = json.loads(clean_notifications)
-        except Exception as e:
-            print("Failed to load notifications JSON data", str(e))
-
-        json_data['notifications'] = parsed_notifications
+        print("Json data going in DB:",json_data)
         
         insert_result = collection.insert_one(json_data)
         json_data["_id"] = str(insert_result.inserted_id)

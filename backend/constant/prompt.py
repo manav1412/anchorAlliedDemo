@@ -3,14 +3,14 @@ Extract data from invoice/LPO images and return ONLY valid JSON in this exact fo
 json
 {
   "lpo_no": "string",
-  "date": "DD/MM/YYYY",
+  "date": "DD/MM/YYYY",     (make the date in this format only, if only the last 2 digits of year is found add 20 in the begin that makes the YYYY complete)
   "distributor_name": "string",
   "each_product_prize": [
     {
-      "product_name": "string",
-      "quantity": "string",
-      "unit_price": "string",
-      "total_price": "string"
+      "product_name": "string",     (handle the ditto mark, When you see quotation marks (""), ditto marks (″), or the word "ditto" in product descriptions, these indicate repetition of text from the previous line(s) The ditto marks mean "same as above" for the preceding words   You must reconstruct the full product name by combining the repeated text with the new text)
+      "quantity": "string",     (Don't include any unit just the number)
+      "unit_price": "string",    (Don't include any unit just the number)
+      "total_price": "string"    (calculate total prize by adding all quantity*unit_price if not present)
     }
   ]
 }

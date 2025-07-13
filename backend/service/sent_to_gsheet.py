@@ -11,6 +11,7 @@ def send_to_google_sheets(document):
     data = {
         "lpo_no": document.get("lpo_no"),
         "customer_name": document.get('distributor_name'),
+        "item_code": document.get('item_code'),
         "item_description": json.dumps(document.get("each_product_prize")),
         "date": document.get("date")
     }

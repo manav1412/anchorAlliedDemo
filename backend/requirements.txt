@@ -10,3 +10,6 @@ httpx
 groq
 python-docx
 PyMuPDF
+sentence_transformers
+pandas
+openpyxl
