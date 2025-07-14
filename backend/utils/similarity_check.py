@@ -2,7 +2,7 @@ import pandas as pd
 from sentence_transformers import SentenceTransformer, util
 
 # Load your Excel file
-df = pd.read_excel("/home/neebal/Desktop/similarity_mapping/Sku Dump.xlsx")
+df = pd.read_excel("Sku Dump.xlsx")
 
 def fetch_similar_item(input_word):
     # Make sure the column exists
