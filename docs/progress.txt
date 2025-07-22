@@ -1,7 +1,8 @@
 APPROACHES
 	1) TR-OCR Fine-tuning
-		STATUS: ON HOLD
+		STATUS: ABANDONED
 		REASON:
+			Primary: Stick to Groq; client comfortable with it
 			ChatGPT Plus subscription requirement
 			Priority for Demo
 		REQUIREMENTS: 
