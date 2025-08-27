@@ -14,5 +14,5 @@ sentence_transformers
 pandas
 openpyxl
 
-# CPU-compatible torch version
-torch>=2.1.0
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.7.0
