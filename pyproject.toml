@@ -1,0 +1,24 @@
+[project]
+name = "anchor-allied"
+version = "0.1.0"
+requires-python = "==3.13.*"
+dependencies = [
+    "python-dotenv",
+    "pymongo",
+    "fastapi",
+    "uvicorn",
+    "pydantic",
+    "pillow",
+    "python-multipart",
+    "httpx",
+    "groq",
+    "python-docx",
+    "PyMuPDF",
+    "sentence_transformers",
+    "pandas",
+    "openpyxl",
+    "torch==2.7.0",
+]
+
+[[tool.uv.index]]
+url = "https://download.pytorch.org/whl/cpu"
