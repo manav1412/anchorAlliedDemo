@@ -113,11 +113,11 @@ async def upload_file_cloud(
         
         result = call_groq(img_str)
         print("Raw response from llama4:--------->", result)
-        cleaned = re.sub(r"^```json\s*|\s*```$", "", result.strip())
+        cleaned = re.sub(r"^```(?:json)?\s*|\s*```$", "", result.strip())
         print("Cleaned Result from llama4:---------->", cleaned)
         
         try:
-            json_data = json.loads(cleaned)
+            json_data = json.loads(cleaned) 
         except Exception as e:
             print("Failed to load JSON data", str(e))
                 
