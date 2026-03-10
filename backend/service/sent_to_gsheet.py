@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 WEBHOOK_URL = os.getenv("GSHEET_WEBHOOK_URL")
-# print("WEBHOOK URL",WEBHOOK_URL)
+print("WEBHOOK URL",WEBHOOK_URL)
 
 def send_to_google_sheets(document):
     data = {
