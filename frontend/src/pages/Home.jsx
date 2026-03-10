@@ -58,11 +58,11 @@ function Home() {
 
     try {
       if(islocalClicked){
-        const response = await axios.post('http://localhost:8000/upload', formData);
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/upload`, formData);
         toast.success('Invoice parsed successfully!', { ...toastOptions, id: toastId });
         setResponseData(response.data.response);
       }else{
-        const response = await axios.post('http://localhost:8000/upload-cloud', formData);
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/upload-cloud`, formData);
         toast.success("Invoice parsed successfully!", { ...toastOptions, id: toastId});
         setResponseData(response.data.response);
       }
