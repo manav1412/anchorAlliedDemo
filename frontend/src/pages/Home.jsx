@@ -58,11 +58,11 @@ function Home() {
 
     try {
       if(islocalClicked){
-        const response = await axios.post('http://localhost:8080/upload', formData);
+        const response = await axios.post('http://localhost:8000/upload', formData);
         toast.success('Invoice parsed successfully!', { ...toastOptions, id: toastId });
         setResponseData(response.data.response);
       }else{
-        const response = await axios.post('http://localhost:8080/upload-cloud', formData);
+        const response = await axios.post('http://localhost:8000/upload-cloud', formData);
         toast.success("Invoice parsed successfully!", { ...toastOptions, id: toastId});
         setResponseData(response.data.response);
       }

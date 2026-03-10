@@ -12,7 +12,7 @@ const Invoices = () => {
   useEffect(() => {
     const fetchInvoices = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/invoices");
+        const response = await axios.get("http://localhost:8000/invoices");
         setAllInvoices(response.data.invoices);
       } catch (err) {
         console.error("Error fetching invoices:", err);
@@ -33,7 +33,7 @@ const Invoices = () => {
     }
 
     try{
-      const response = await axios.delete(`http://localhost:8080/invoice/${invoiceId}`);
+      const response = await axios.delete(`http://localhost:8000/invoice/${invoiceId}`);
       if(response.data?.message){
         setAllInvoices((prev) => prev.filter((invoice) => invoice._id !== invoiceId));
         toast.success(response.data.message)
