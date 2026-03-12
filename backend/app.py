@@ -16,6 +16,7 @@ import fitz
 
 from service.ollama import get_model_response
 from service.llama4_scout import call_groq
+from service.fireworks_ai import *
 from service.denoising import method3_pil_enhancement_from_base64
 from service.sent_to_gsheet import send_to_google_sheets
 from utils.similarity_check import fetch_similar_item
@@ -111,10 +112,11 @@ async def upload_file_cloud(
         file_pil.save(buffered, format="PNG")
         img_str = base64.b64encode(buffered.getvalue()).decode()
         
-        result = call_groq(img_str)
-        print("Raw response from llama4:--------->", result)
+        # result = call_groq(img_str)
+        result = call_qwen3_vl_30b_a3b_i(img_str)
+        print("Raw response from qwen3:--------->", result)
         cleaned = re.sub(r"^```(?:json)?\s*|\s*```$", "", result.strip())
-        print("Cleaned Result from llama4:---------->", cleaned)
+        print("Cleaned Result from qwen3:---------->", cleaned)
         
         try:
             json_data = json.loads(cleaned) 

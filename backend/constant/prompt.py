@@ -37,4 +37,6 @@ If any field is missing, use empty string ""
 For quantity/prices: preserve original format including units (e.g., "10 ctn", "44/-")
 
 DO NOT include buyer names like "Anchor Allied" - only extract the supplier/vendor company name.
+
+It is each_product_prize and NOT each_product_price in the JSON.
 """

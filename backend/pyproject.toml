@@ -18,7 +18,12 @@ dependencies = [
     "pandas",
     "openpyxl",
     "torch==2.7.0",
+    "fireworks-ai>=0.0.1a1", # ← allow pre-release versions
+    "openai",
 ]
+
+[tool.uv]
+prerelease = "if-necessary-or-explicit"   # ← tell uv to allow pre-releases
 
 [[tool.uv.index]]
 url = "https://download.pytorch.org/whl/cpu"
