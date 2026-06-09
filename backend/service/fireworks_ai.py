@@ -9,7 +9,7 @@ client = OpenAI(
 
 def call_qwen3_vl_30b_a3b_i(base64_image):
     response = client.chat.completions.create(
-        model="accounts/fireworks/models/qwen3-vl-30b-a3b-instruct",
+        model="accounts/fireworks/models/qwen3p6-plus",
         messages=[
             {
                 "role": "user",
